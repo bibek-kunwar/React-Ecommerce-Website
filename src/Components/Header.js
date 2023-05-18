@@ -8,7 +8,7 @@ const Header = () => {
     <>
       <MainHeader>
         <NavLink>
-          {/* <img src="./images/logo.png" alt="logo_image" /> */}
+         
           <h3>
           BIBEK STORE
           </h3>
