@@ -8,9 +8,9 @@ const Header = () => {
     <>
       <MainHeader>
         <NavLink>
-         
+
           <h3>
-          BIBEK STORE
+          Dark Shadoow
           </h3>
         </NavLink>
         <Nav/>

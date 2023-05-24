@@ -1,55 +1,3 @@
-// import axios from "axios";
-// import { createContext, useContext, useEffect, useReducer } from "react"; //1
-
-// //2 Calling API Which is host in thapa
-// const API = "https://api.pujakaitem.com/api/products";
-
-// // 3
-// const initialState = {
-//   isLoading: false,
-//   isError: false,
-//   products: [],
-//   featureProducts: [],
-// };
-
-// const AppContext = createContext();//1
-
-// //app provider
-// const AppProvider = ({ children }) => { //1
-
-//   //3 state managment system
-//   cosnt [state,dispatch]=useReducer(reducer,initialState);
-
-// // 2 define getproducts
-//   const getProducts = async (url) => {
-//     dispatch({type:"SET_LOADING"})
-//     try {
-//       const res = await axios.get(url);
-//       const products = await res.data;
-//       dispatch({ type: "My_API_DATA", payload: products });
-//     } catch (error) {
-//       dispatch({type:"API_ERROR"})
-
-//     }
-
-
-//   }
-// //useEfffect Hooks
-
-//   useEffect(() => {
-//     getProducts(API);
-//   },[]);
-
-
-//   return <AppContext.Provider value={{ ...state }}>{children}
-//   </AppContext.Provider>//1
-// }
-
-// //custom hooks
-// const UseProductContext = () => {//1
-//   return useContext(AppContext)//1
-// }
-// export { AppProvider, AppContext, UseProductContext}//1
 import { createContext, useContext, useEffect, useReducer } from "react";
 import axios from "axios";
 import reducer from "../reducer/productReducer";
@@ -63,6 +11,8 @@ const initialState = {
   isError: false,
   products: [],
   featureProducts: [],
+  isSingleLoading: false,
+  singleProduct: {},
 };
 
 const AppProvider = ({ children }) => {
@@ -79,12 +29,27 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  // my 2nd api call for single product
+
+  const getSingleProduct = async (url) => {
+    dispatch({ type: "SET_SINGLE_LOADING" });
+    try {
+      const res = await axios.get(url);
+      const singleProduct = await res.data;
+      dispatch({ type: "SET_SINGLE_PRODUCT", payload: singleProduct });
+    } catch (error) {
+      dispatch({ type: "SET_SINGLE_ERROR" });
+    }
+  };
+
   useEffect(() => {
     getProducts(API);
   }, []);
 
   return (
-    <AppContext.Provider value={{ ...state }}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{ ...state, getSingleProduct }}>
+      {children}
+    </AppContext.Provider>
   );
 };
 
